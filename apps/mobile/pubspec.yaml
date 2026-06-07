@@ -1,5 +1,5 @@
-name: nexus_mobile
-description: Nexus Mobile Command Center for AI Agents
+name: qubix_mobile
+description: Qubix Mobile Command Center for AI Agents
 version: 1.0.0+1
 publish_to: 'none'
 

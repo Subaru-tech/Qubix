@@ -3,12 +3,12 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: nexus-postgres
+    container_name: qubix-postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: nexus
+      POSTGRES_DB: qubix
     ports:
       - "5435:5432"
     volumes:
@@ -16,7 +16,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: nexus-redis
+    container_name: qubix-redis
     restart: always
     ports:
       - "6380:6379"
@@ -27,14 +27,17 @@ services:
     build:
       context: ../
       dockerfile: apps/server/Dockerfile
-    container_name: nexus-server
+    container_name: qubix-server
     restart: always
     environment:
       PORT: 3000
       NODE_ENV: development
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/nexus?schema=public
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/qubix?schema=public
       REDIS_URL: redis://redis:6379
       JWT_SECRET: supersecretjwtkeythatisverylong123!
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+      GITHUB_CALLBACK_URL: ${GITHUB_CALLBACK_URL}
     ports:
       - "3000:3000"
     depends_on:
@@ -43,7 +46,7 @@ services:
 
   caddy:
     image: caddy:2-alpine
-    container_name: nexus-caddy
+    container_name: qubix-caddy
     restart: always
     ports:
       - "80:80"

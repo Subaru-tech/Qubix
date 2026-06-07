@@ -23,7 +23,7 @@ export const prisma = prismaClient.$extends({
       userId: string,
       fn: (tx: any) => Promise<T>
     ): Promise<T> {
-      return prismaClient.$transaction(async (tx) => {
+      return prismaClient.$transaction(async (tx: any) => {
         // Set local transaction-scoped user ID
         await tx.$executeRawUnsafe(
           `SELECT set_config('app.current_user_id', $1, true);`,

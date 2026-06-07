@@ -1,4 +1,4 @@
-// Shared type definitions for Nexus
+// Shared type definitions for Qubix
 export interface HealthStatus {
   status: string;
   version: string;

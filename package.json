@@ -1,8 +1,8 @@
 {
-  "name": "nexus-monorepo",
+  "name": "qubix-monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "Nexus - Open-source self-hosted mobile command center for AI agents",
+  "description": "Qubix - Open-source self-hosted mobile command center for AI agents",
   "workspaces": [
     "apps/server",
     "packages/shared_types"
