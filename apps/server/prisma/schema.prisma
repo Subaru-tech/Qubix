@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String?  // null if OAuth-only
+  githubId      String?  @unique
+  displayName   String?
+  avatarUrl     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationships
+  threads       Thread[]
+  agents        Agent[]
+  pushTokens    PushToken[]
+}
+
+// ─────────────────────────────────────────
+// AGENT (AI Connector Configuration)
+// ─────────────────────────────────────────
+model Agent {
+  id            String      @id @default(uuid())
+  userId        String
+  name          String      // e.g., "My GPT-4 Assistant"
+  description   String?
+  connectorType String      // "openai", "anthropic", "webhook"
+  config        Json        // Flexible: API keys, model names, system prompts
+  systemPrompt  String?     // Optional system prompt for this agent
+  isEnabled     Boolean     @default(true)
+  status        String      @default("offline") // "online" | "offline" | "error"
+  lastUsedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relationships
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages      Message[]   // Messages sent AS this agent
+  threads       Thread[]    // Threads where this agent is active
+
+  @@index([userId])
+}
+
+// ─────────────────────────────────────────
+// THREAD (Chat Conversation)
+// ─────────────────────────────────────────
+model Thread {
+  id            String    @id @default(uuid())
+  userId        String
+  agentId       String?   // Current active agent in this thread
+  title         String?   // Auto-generated or user-edited
+  isPinned      Boolean   @default(false)
+  lastMessageAt DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relationships
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  agent         Agent?    @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  messages      Message[]
+
+  @@index([userId, lastMessageAt])
+}
+
+// ─────────────────────────────────────────
+// MESSAGE
+// ─────────────────────────────────────────
+model Message {
+  id            String   @id @default(uuid())
+  threadId      String
+  agentId       String?  // Which agent generated this (null = user message)
+  role          String   // "user" | "agent" | "system"
+  content       String   // Markdown text
+  status        String   @default("sent") // "pending" | "sent" | "delivered" | "failed"
+  metadata      Json?    // Token usage, latency, raw API response snippet
+  createdAt     DateTime @default(now())
+
+  // Relationships
+  thread        Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  agent         Agent?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  @@index([threadId, createdAt])
+}
+
+// ─────────────────────────────────────────
+// PUSH TOKEN (FCM)
+// ─────────────────────────────────────────
+model PushToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  platform  String   // "android" | "ios"
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
