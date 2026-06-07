@@ -1,0 +1,15 @@
+{
+  "name": "nexus-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nexus - Open-source self-hosted mobile command center for AI agents",
+  "workspaces": [
+    "apps/server",
+    "packages/shared_types"
+  ],
+  "scripts": {
+    "dev:server": "npm run dev --workspace=apps/server",
+    "build:server": "npm run build --workspace=apps/server",
+    "db:migrate": "npm run db:migrate --workspace=apps/server"
+  }
+}

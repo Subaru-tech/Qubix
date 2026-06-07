@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: nexus-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nexus
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: nexus-redis
+    restart: always
+    ports:
+      - "6380:6379"
+    volumes:
+      - redisdata:/data
+
+  server:
+    build:
+      context: ../
+      dockerfile: apps/server/Dockerfile
+    container_name: nexus-server
+    restart: always
+    environment:
+      PORT: 3000
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/nexus?schema=public
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: supersecretjwtkeythatisverylong123!
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: nexus-caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - server
+
+volumes:
+  pgdata:
+  redisdata:
+  caddy_data:
+  caddy_config:
