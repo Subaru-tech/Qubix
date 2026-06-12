@@ -37,6 +37,10 @@ class _AgentFormSheetState extends State<AgentFormSheet> {
   late String _webhookUrl;
   late String _webhookHeaders;
 
+  // Gemini fields
+  late String _geminiApiKey;
+  late String _geminiModel;
+
   bool _obscureApiKey = true;
   bool _isSaving = false;
 
@@ -64,6 +68,9 @@ class _AgentFormSheetState extends State<AgentFormSheet> {
     } else {
       _webhookHeaders = '';
     }
+
+    _geminiApiKey = config['apiKey'] ?? '';
+    _geminiModel = config['model'] ?? '';
   }
 
   void _submit() async {
@@ -85,6 +92,11 @@ class _AgentFormSheetState extends State<AgentFormSheet> {
       config = {
         'url': _webhookUrl,
         if (_webhookHeaders.isNotEmpty) 'headers': _webhookHeaders, // Note: real app would parse this string to Map
+      };
+    } else if (_connectorType == 'gemini') {
+      config = {
+        'apiKey': _geminiApiKey,
+        if (_geminiModel.isNotEmpty) 'model': _geminiModel,
       };
     }
 
@@ -193,6 +205,7 @@ class _AgentFormSheetState extends State<AgentFormSheet> {
                   ),
                   items: const [
                     DropdownMenuItem(value: 'openai', child: Text('OpenAI')),
+                    DropdownMenuItem(value: 'gemini', child: Text('Google Gemini')),
                     DropdownMenuItem(value: 'webhook', child: Text('Webhook')),
                     DropdownMenuItem(value: 'echo', child: Text('Echo')),
                   ],
@@ -263,6 +276,38 @@ class _AgentFormSheetState extends State<AgentFormSheet> {
                       return null;
                     },
                     onSaved: (v) => _openAiBaseUrl = v?.trim() ?? '',
+                  ),
+                ] else if (_connectorType == 'gemini') ...[
+                  TextFormField(
+                    initialValue: isEditing ? '••••••••' : _geminiApiKey,
+                    obscureText: _obscureApiKey,
+                    style: const TextStyle(fontFamily: 'monospace'),
+                    decoration: InputDecoration(
+                      labelText: 'Gemini API Key',
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(_obscureApiKey ? Icons.visibility : Icons.visibility_off),
+                        onPressed: () => setState(() => _obscureApiKey = !_obscureApiKey),
+                      ),
+                    ),
+                    validator: (v) {
+                      if (!isEditing && (v == null || v.isEmpty)) return 'Required';
+                      return null;
+                    },
+                    onSaved: (v) {
+                      if (v != null && v.isNotEmpty && v != '••••••••') {
+                        _geminiApiKey = v.trim();
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    initialValue: _geminiModel,
+                    decoration: const InputDecoration(
+                      labelText: 'Model (e.g. gemini-1.5-flash)',
+                      border: OutlineInputBorder(),
+                    ),
+                    onSaved: (v) => _geminiModel = v?.trim() ?? '',
                   ),
                 ] else if (_connectorType == 'webhook') ...[
                   TextFormField(

@@ -4,6 +4,7 @@ import { BaseConnector } from '../connectors/base';
 import { EchoConnector } from '../connectors/echo';
 import { OpenAIConnector } from '../connectors/openai';
 import { WebhookConnector } from '../connectors/webhook';
+import { GeminiConnector } from '../connectors/gemini';
 
 export class ConnectorRegistry {
   private connectors = new Map<string, BaseConnector>();
@@ -13,6 +14,7 @@ export class ConnectorRegistry {
     this.register('echo', new EchoConnector());
     this.register('openai', new OpenAIConnector());
     this.register('webhook', new WebhookConnector());
+    this.register('gemini', new GeminiConnector());
   }
 
   /**
