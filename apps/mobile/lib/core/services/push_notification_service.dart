@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/repositories/push_repository.dart';
+import 'deep_link_service.dart';
 
 // Top-level function for background messages
 @pragma('vm:entry-point')
@@ -124,16 +125,7 @@ class PushNotificationService {
 
   void _navigateToThread(String? threadId) {
     if (threadId != null) {
-      _ref.read(notificationTapProvider.notifier).update(threadId);
+      _ref.read(deepLinkServiceProvider).emit(DeepLinkEvent(path: '/thread', params: {'id': threadId}));
     }
   }
 }
-
-class NotificationTapNotifier extends Notifier<String?> {
-  @override
-  String? build() => null;
-  void update(String? threadId) => state = threadId;
-}
-
-// Global provider to observe notification taps
-final notificationTapProvider = NotifierProvider<NotificationTapNotifier, String?>(NotificationTapNotifier.new);

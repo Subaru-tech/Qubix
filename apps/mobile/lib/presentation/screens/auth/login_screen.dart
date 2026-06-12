@@ -6,6 +6,7 @@ import '../../../core/theme/colors.dart';
 import '../../../core/theme/typography.dart';
 import '../../../core/utils/api_client.dart';
 import '../../../core/router.dart';
+import 'github_webview_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -139,6 +140,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                         )
                       : const Text('Sign In'),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GithubWebViewScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.code), // Represents GitHub as we don't have the logo
+                  label: const Text('Sign in with GitHub'),
                 ),
               ),
               const SizedBox(height: 16),
