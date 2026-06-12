@@ -1,14 +1,18 @@
-import { Message } from '@prisma/client';
+import type { Message } from '@prisma/client';
 import { prisma } from '../db/client';
 import { BaseConnector } from '../connectors/base';
 import { EchoConnector } from '../connectors/echo';
+import { OpenAIConnector } from '../connectors/openai';
+import { WebhookConnector } from '../connectors/webhook';
 
 export class ConnectorRegistry {
   private connectors = new Map<string, BaseConnector>();
 
   constructor() {
-    // Automatically register default connectors
+    // Register all built-in connectors
     this.register('echo', new EchoConnector());
+    this.register('openai', new OpenAIConnector());
+    this.register('webhook', new WebhookConnector());
   }
 
   /**
@@ -31,12 +35,26 @@ export class ConnectorRegistry {
   }
 
   /**
+   * Returns all registered connector type names.
+   */
+  getRegisteredTypes(): string[] {
+    return Array.from(this.connectors.keys());
+  }
+
+  /**
+   * Checks if a connector type is registered.
+   */
+  has(type: string): boolean {
+    return this.connectors.has(type);
+  }
+
+  /**
    * Fetches an agent under the user's RLS context, resolves the connector, and validates its configuration.
    */
   async testConnection(agentId: string, userId: string): Promise<boolean> {
     const agent = await prisma.$transactionWithUser(userId, async (tx: any) => {
-      return tx.agent.findUnique({
-        where: { id: agentId },
+      return tx.agent.findFirst({
+        where: { id: agentId, userId },
       });
     });
 
@@ -49,12 +67,12 @@ export class ConnectorRegistry {
   }
 
   /**
-   * Fetches an agent under the user's RLS context, maps the messages, and streams agent response chunks.
+   * Fetches an agent under the user's RLS context and returns its connectivity status.
    */
-  async streamMessage(agentId: string, messages: Message[], userId: string): Promise<AsyncIterable<string>> {
+  async getAgentStatus(agentId: string, userId: string): Promise<'online' | 'offline' | 'error'> {
     const agent = await prisma.$transactionWithUser(userId, async (tx: any) => {
-      return tx.agent.findUnique({
-        where: { id: agentId },
+      return tx.agent.findFirst({
+        where: { id: agentId, userId },
       });
     });
 
@@ -63,6 +81,30 @@ export class ConnectorRegistry {
     }
 
     const connector = this.get(agent.connectorType);
+    return connector.getStatus(agent.config as Record<string, unknown>);
+  }
+
+  /**
+   * Fetches an agent under the user's RLS context, maps the messages, and streams agent response chunks.
+   */
+  async streamMessage(agentId: string, messages: Message[], userId: string): Promise<AsyncIterable<string>> {
+    const agent = await prisma.$transactionWithUser(userId, async (tx: any) => {
+      return tx.agent.findFirst({
+        where: { id: agentId, userId },
+      });
+    });
+
+    if (!agent) {
+      throw new Error(`Agent not found or unauthorized: ${agentId}`);
+    }
+
+    const connector = this.get(agent.connectorType);
+
+    // Build config with systemPrompt injected for connectors that support it
+    const config = {
+      ...(agent.config as Record<string, unknown>),
+      ...(agent.systemPrompt ? { systemPrompt: agent.systemPrompt } : {}),
+    };
 
     // Map Message model to the format expected by the BaseConnector
     const mappedMessages = messages.map((msg) => ({
@@ -75,7 +117,7 @@ export class ConnectorRegistry {
     return connector.sendMessage({
       messages: mappedMessages,
       threadId,
-      config: agent.config as Record<string, unknown>,
+      config,
     });
   }
 }

@@ -12,16 +12,20 @@
     "@fastify/cors": "^8.5.0",
     "@fastify/helmet": "^11.1.1",
     "@fastify/rate-limit": "^9.1.0",
+    "@fastify/websocket": "^11.2.0",
     "@prisma/client": "^5.13.0",
     "bcrypt": "^6.0.0",
+    "bullmq": "^5.78.0",
     "dotenv": "^16.4.5",
     "fastify": "^4.27.0",
+    "ioredis": "^5.11.1",
     "jose": "^6.2.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^20.12.7",
+    "@types/ws": "^8.18.1",
     "prisma": "^5.13.0",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5"
