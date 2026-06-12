@@ -9,6 +9,7 @@ import '../../../core/theme/theme_notifier.dart';
 import '../../../core/router.dart';
 import '../../viewmodels/settings_notifier.dart';
 import '../../../core/utils/api_client.dart';
+import '../../../core/services/telemetry_service.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -341,6 +342,30 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       leading: Icon(Icons.delete_forever, color: Theme.of(context).colorScheme.error),
                       title: Text('Delete Account', style: QubixTypography.bodyLarge.copyWith(color: Theme.of(context).colorScheme.error)),
                       onTap: state.isLoading ? null : _confirmDeleteAccount,
+                    ),
+                  ],
+                ),
+              ),
+
+              // Privacy Section
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Column(
+                  children: [
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final telemetryService = ref.watch(telemetryServiceProvider);
+                        return SwitchListTile(
+                          title: Text('Anonymous Telemetry', style: QubixTypography.bodyLarge),
+                          subtitle: Text('Help us improve Qubix by sending anonymous usage data.', style: QubixTypography.bodySmall.copyWith(color: QubixColors.textSecondary)),
+                          value: telemetryService.isEnabled,
+                          onChanged: (val) {
+                            telemetryService.setEnabled(val);
+                            // Force rebuild by re-reading or simple setState (but Consumer works better with provider, though TelemetryService is not a StateNotifier right now. We can just setState to update UI).
+                            setState(() {}); 
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
