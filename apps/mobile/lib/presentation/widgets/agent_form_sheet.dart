@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../data/models/agent.dart';
 
@@ -236,6 +237,15 @@ class _AgentFormSheetState extends State<AgentFormSheet> {
                       hintText: 'gpt-4-turbo',
                       border: OutlineInputBorder(),
                     ),
+                    validator: (v) {
+                      if (v != null && v.isNotEmpty) {
+                        final validModels = ['gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo', 'gpt-4o'];
+                        if (!validModels.contains(v.trim())) {
+                          return 'Unknown model (e.g., gpt-4-turbo)';
+                        }
+                      }
+                      return null;
+                    },
                     onSaved: (v) => _openAiModel = v?.trim() ?? '',
                   ),
                   const SizedBox(height: 16),
@@ -279,6 +289,19 @@ class _AgentFormSheetState extends State<AgentFormSheet> {
                       hintText: '{"Authorization": "Bearer xyz"}',
                       border: OutlineInputBorder(),
                     ),
+                    validator: (v) {
+                      if (v != null && v.isNotEmpty) {
+                        try {
+                          final decoded = jsonDecode(v);
+                          if (decoded is! Map<String, dynamic>) {
+                            return 'Headers must be a JSON object';
+                          }
+                        } catch (_) {
+                          return 'Invalid JSON string';
+                        }
+                      }
+                      return null;
+                    },
                     onSaved: (v) => _webhookHeaders = v?.trim() ?? '',
                   ),
                 ] else if (_connectorType == 'echo') ...[

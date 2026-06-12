@@ -99,8 +99,11 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
               child: TextField(
                 controller: _textController,
                 style: QubixTypography.bodyLarge,
+                maxLength: 2000,
+                maxLines: null, // allow multiline
                 decoration: InputDecoration(
                   hintText: 'Type a message...',
+                  counterText: '', // Hide the counter to keep UI clean
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
                     borderSide: BorderSide.none,

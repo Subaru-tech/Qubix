@@ -23,8 +23,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _obscurePassword = true;
 
   Future<void> _login() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
       setState(() => _error = 'Please fill in all fields');
+      return;
+    }
+    
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(_emailController.text.trim())) {
+      setState(() => _error = 'Please enter a valid email address');
+      return;
+    }
+    
+    if (_passwordController.text.length < 8) {
+      setState(() => _error = 'Password must be at least 8 characters long');
       return;
     }
 

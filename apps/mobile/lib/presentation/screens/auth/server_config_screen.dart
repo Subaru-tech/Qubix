@@ -27,6 +27,17 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
       setState(() => _error = 'Please enter a server URL');
       return;
     }
+    
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      setState(() => _error = 'URL must start with http:// or https://');
+      return;
+    }
+    
+    final uri = Uri.tryParse(url);
+    if (uri == null || uri.host.isEmpty) {
+      setState(() => _error = 'Please enter a valid URL');
+      return;
+    }
 
     setState(() { _isChecking = true; _error = null; _isConnected = false; });
 

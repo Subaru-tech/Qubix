@@ -17,18 +17,36 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _nameController = TextEditingController();
   bool _isLoading = false;
   String? _error;
   bool _obscurePassword = true;
 
   Future<void> _register() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty || _confirmPasswordController.text.isEmpty) {
       setState(() => _error = 'Please fill in all required fields');
       return;
     }
+    
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(_emailController.text.trim())) {
+      setState(() => _error = 'Please enter a valid email address');
+      return;
+    }
+    
     if (_passwordController.text.length < 8) {
       setState(() => _error = 'Password must be at least 8 characters');
+      return;
+    }
+    
+    if (_passwordController.text != _confirmPasswordController.text) {
+      setState(() => _error = 'Passwords do not match');
+      return;
+    }
+    
+    if (_nameController.text.length > 50) {
+      setState(() => _error = 'Display name must be 50 characters or less');
       return;
     }
 
@@ -64,6 +82,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _nameController.dispose();
     super.dispose();
   }
@@ -119,6 +138,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
                     onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                   ),
+                ),
+                textInputAction: TextInputAction.next,
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _confirmPasswordController,
+                style: QubixTypography.bodyLarge,
+                obscureText: _obscurePassword,
+                decoration: const InputDecoration(
+                  labelText: 'Confirm Password',
+                  prefixIcon: Icon(Icons.lock_clock_outlined),
                 ),
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _register(),

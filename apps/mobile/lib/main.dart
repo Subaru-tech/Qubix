@@ -6,12 +6,15 @@ import 'core/constants/app_constants.dart';
 import 'core/theme/theme.dart';
 import 'core/router.dart';
 import 'core/utils/api_client.dart';
+import 'core/services/snackbar_service.dart';
 
 import 'core/theme/theme_notifier.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'core/services/push_notification_service.dart';
 import 'core/services/deep_link_service.dart';
+
+import 'presentation/widgets/error_boundary.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -116,13 +119,16 @@ class QubixApp extends ConsumerWidget {
       }
     });
 
-    return MaterialApp.router(
-      title: AppConstants.appName,
-      theme: QubixTheme.dark, // We will extend this to support light theme if necessary
-      darkTheme: QubixTheme.dark,
-      themeMode: themeState.themeMode,
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
+    return ErrorBoundary(
+      child: MaterialApp.router(
+        title: AppConstants.appName,
+        scaffoldMessengerKey: SnackBarService.scaffoldMessengerKey,
+        theme: QubixTheme.dark, // We will extend this to support light theme if necessary
+        darkTheme: QubixTheme.dark,
+        themeMode: themeState.themeMode,
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
