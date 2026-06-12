@@ -9,8 +9,19 @@ import 'core/utils/api_client.dart';
 
 import 'core/theme/theme_notifier.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'core/services/push_notification_service.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    // Usually means google-services.json is missing or invalid.
+    // We catch this so the app doesn't immediately crash if the user hasn't added it yet.
+    debugPrint('Firebase init failed: $e');
+  }
 
   // Make system UI match our dark theme
   SystemChrome.setSystemUIOverlayStyle(
@@ -25,11 +36,23 @@ void main() async {
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
 
+  final container = ProviderContainer(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+    ],
+  );
+
+  try {
+    // Initialize Push Notifications
+    await container.read(pushNotificationServiceProvider).initialize();
+    await container.read(pushNotificationServiceProvider).handleInitialMessage();
+  } catch (e) {
+    debugPrint('Push notifications init failed: $e');
+  }
+
   runApp(
-    ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      ],
+    UncontrolledProviderScope(
+      container: container,
       child: const QubixApp(),
     ),
   );
@@ -42,6 +65,12 @@ class QubixApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final themeState = ref.watch(themeProvider);
+
+    ref.listen<String?>(notificationTapProvider, (previous, next) {
+      if (next != null && context.mounted) {
+        router.push('/chats/$next');
+      }
+    });
 
     return MaterialApp.router(
       title: AppConstants.appName,
