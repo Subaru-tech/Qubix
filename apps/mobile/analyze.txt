@@ -1,0 +1,61 @@
+Analyzing mobile...                                             
+
+warning • Unused import: 'dart:convert'. Try removing the import directive • lib/data/local/db_service.dart:1:8 • unused_import
+   info • The imported package 'path' isn't a dependency of the importing package. Try adding a dependency for 'path' in the 'pubspec.yaml' file • lib/data/local/db_service.dart:2:8 • depend_on_referenced_packages
+  error • Target of URI doesn't exist: '../widgets/message_bubble.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist • lib/presentation/screens/chat/chat_thread_screen.dart:6:8 • uri_does_not_exist
+  error • Target of URI doesn't exist: '../widgets/connectivity_banner.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist • lib/presentation/screens/chat/chat_thread_screen.dart:7:8 • uri_does_not_exist
+  error • The name 'ConnectivityBanner' isn't a class. Try correcting the name to match an existing class • lib/presentation/screens/chat/chat_thread_screen.dart:58:17 • creation_with_non_type
+  error • The method 'MessageBubble' isn't defined for the type '_ChatThreadScreenState'. Try correcting the name to the name of an existing method, or defining a method named 'MessageBubble' • lib/presentation/screens/chat/chat_thread_screen.dart:74:28 • undefined_method
+   info • The imported package 'uuid' isn't a dependency of the importing package. Try adding a dependency for 'uuid' in the 'pubspec.yaml' file • lib/presentation/viewmodels/chat_thread_notifier.dart:2:8 • depend_on_referenced_packages
+  error • Undefined name 'StateNotifierProvider'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:8:28 • undefined_identifier
+  error • Classes can only extend other classes. Try specifying a different superclass, or removing the extends clause • lib/presentation/viewmodels/chat_thread_notifier.dart:17:34 • extends_non_class
+  error • Too many positional arguments: 0 expected, but 1 found. Try removing the extra arguments • lib/presentation/viewmodels/chat_thread_notifier.dart:29:14 • extra_positional_arguments
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:44:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:46:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:57:9 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:67:13 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:78:13 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:98:5 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:99:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:113:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:118:11 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:123:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:128:11 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:154:5 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:159:9 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:165:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:170:11 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:174:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:179:11 • undefined_identifier
+  error • Undefined name 'dbServiceProvider'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:187:34 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:189:7 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/chat_thread_notifier.dart:190:9 • undefined_identifier
+warning • The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation • lib/presentation/viewmodels/chat_thread_notifier.dart:196:8 • override_on_non_overriding_member
+  error • The method 'dispose' isn't defined in a superclass of 'ChatThreadNotifier'. Try correcting the name to the name of an existing method, or defining a method named 'dispose' in a superclass • lib/presentation/viewmodels/chat_thread_notifier.dart:198:11 • undefined_super_member
+  error • The function 'StateNotifierProvider' isn't defined. Try importing the library that defines 'StateNotifierProvider', correcting the name to the name of an existing function, or defining a function named 'StateNotifierProvider' • lib/presentation/viewmodels/connectivity_notifier.dart:10:30 • undefined_function
+  error • Classes can only extend other classes. Try specifying a different superclass, or removing the extends clause • lib/presentation/viewmodels/connectivity_notifier.dart:14:36 • extends_non_class
+  error • Too many positional arguments: 0 expected, but 1 found. Try removing the extra arguments • lib/presentation/viewmodels/connectivity_notifier.dart:19:34 • extra_positional_arguments
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/connectivity_notifier.dart:39:11 • undefined_identifier
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/viewmodels/connectivity_notifier.dart:39:39 • dead_code
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/connectivity_notifier.dart:40:9 • undefined_identifier
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/connectivity_notifier.dart:43:11 • undefined_identifier
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/viewmodels/connectivity_notifier.dart:43:40 • dead_code
+  error • Undefined name 'state'. Try correcting the name to one that is defined, or defining the name • lib/presentation/viewmodels/connectivity_notifier.dart:44:9 • undefined_identifier
+warning • The method doesn't override an inherited method. Try updating this class to match the superclass, or removing the override annotation • lib/presentation/viewmodels/connectivity_notifier.dart:50:8 • override_on_non_overriding_member
+  error • The method 'dispose' isn't defined in a superclass of 'ConnectivityNotifier'. Try correcting the name to the name of an existing method, or defining a method named 'dispose' in a superclass • lib/presentation/viewmodels/connectivity_notifier.dart:53:11 • undefined_super_member
+  error • Target of URI doesn't exist: '../../viewmodels/connectivity_notifier.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist • lib/presentation/widgets/connectivity_banner.dart:5:8 • uri_does_not_exist
+  error • Undefined name 'connectivityProvider'. Try correcting the name to one that is defined, or defining the name • lib/presentation/widgets/connectivity_banner.dart:20:29 • undefined_identifier
+  error • The name 'ConnectionOffline' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'ConnectionOffline' • lib/presentation/widgets/connectivity_banner.dart:23:23 • type_test_with_undefined_name
+  error • The name 'ConnectionOnline' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'ConnectionOnline' • lib/presentation/widgets/connectivity_banner.dart:23:53 • type_test_with_undefined_name
+  error • The name 'ConnectionOffline' isn't defined, so it can't be used in an 'is' expression. Try changing the name to the name of an existing type, or creating a type with the name 'ConnectionOffline' • lib/presentation/widgets/connectivity_banner.dart:35:37 • type_test_with_undefined_name
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/widgets/connectivity_banner.dart:36:38 • dead_code
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/widgets/connectivity_banner.dart:38:53 • dead_code
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/widgets/connectivity_banner.dart:39:47 • dead_code
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/widgets/connectivity_banner.dart:40:57 • dead_code
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/widgets/connectivity_banner.dart:45:34 • dead_code
+warning • Dead code. Try removing the code, or fixing the code before it so that it can be reached • lib/presentation/widgets/connectivity_banner.dart:64:13 • dead_code
+  error • Target of URI doesn't exist: '../../viewmodels/chat_thread_notifier.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist • lib/presentation/widgets/message_bubble.dart:7:8 • uri_does_not_exist
+  error • The method 'chatThreadProvider' isn't defined for the type 'MessageBubble'. Try correcting the name to the name of an existing method, or defining a method named 'chatThreadProvider' • lib/presentation/widgets/message_bubble.dart:29:28 • undefined_method
+  error • The method 'chatThreadProvider' isn't defined for the type 'MessageBubble'. Try correcting the name to the name of an existing method, or defining a method named 'chatThreadProvider' • lib/presentation/widgets/message_bubble.dart:37:28 • undefined_method
+  error • The method 'chatThreadProvider' isn't defined for the type 'MessageBubble'. Try correcting the name to the name of an existing method, or defining a method named 'chatThreadProvider' • lib/presentation/widgets/message_bubble.dart:132:28 • undefined_method
+
