@@ -18,7 +18,7 @@ I built Qubix because I was tired of using Telegram to manage my AI agents.
 **Tech stack:** Fastify + PostgreSQL + Redis + BullMQ + Flutter + Riverpod
 
 **Repo:** https://github.com/Subaru-tech/Qubix
-**APK:** [link to GitHub releases or direct download]
+**APK:** https://github.com/Subaru-tech/Qubix/releases/download/v1.0.0/app-release.apk
 
 **Demo:** [30-second screen recording GIF]
 
