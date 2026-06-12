@@ -30,8 +30,8 @@ class AgentRepository {
       'name': name,
       'connectorType': connectorType,
       'config': config,
-      if (description != null) 'description': description,
-      if (systemPrompt != null) 'systemPrompt': systemPrompt,
+      'description': ?description,
+      'systemPrompt': ?systemPrompt,
       'isEnabled': isEnabled,
     });
     return Agent.fromJson(response.data['data']);
@@ -47,12 +47,12 @@ class AgentRepository {
     bool? isEnabled,
   }) async {
     final response = await _dio.patch('/agents/$id', data: {
-      if (name != null) 'name': name,
-      if (connectorType != null) 'connectorType': connectorType,
-      if (config != null) 'config': config,
-      if (description != null) 'description': description,
-      if (systemPrompt != null) 'systemPrompt': systemPrompt,
-      if (isEnabled != null) 'isEnabled': isEnabled,
+      'name': ?name,
+      'connectorType': ?connectorType,
+      'config': ?config,
+      'description': ?description,
+      'systemPrompt': ?systemPrompt,
+      'isEnabled': ?isEnabled,
     });
     return Agent.fromJson(response.data['data']);
   }

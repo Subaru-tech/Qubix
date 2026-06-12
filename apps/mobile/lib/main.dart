@@ -7,6 +7,8 @@ import 'core/theme/theme.dart';
 import 'core/router.dart';
 import 'core/utils/api_client.dart';
 
+import 'core/theme/theme_notifier.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -39,11 +41,13 @@ class QubixApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final themeState = ref.watch(themeProvider);
 
     return MaterialApp.router(
       title: AppConstants.appName,
-      theme: QubixTheme.dark,
-      themeMode: ThemeMode.dark, // Force dark mode
+      theme: QubixTheme.dark, // We will extend this to support light theme if necessary
+      darkTheme: QubixTheme.dark,
+      themeMode: themeState.themeMode,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
